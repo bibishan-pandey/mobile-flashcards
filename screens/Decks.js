@@ -8,7 +8,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {connect} from 'react-redux';
 
 import {primaryDark, secondaryLight, white} from '../utils/colors';
-import {getDecksFromStorage, saveAllDecksInStorage} from '../utils/api';
+import {
+  getDecksFromStorage,
+  removeAllDecksFromStorage,
+  saveAllDecksInStorage,
+} from '../utils/api';
 import {setupDummyData} from '../utils/helpers';
 import {getDecks} from '../store/actions/actionCreators';
 
@@ -75,13 +79,13 @@ class Decks extends React.Component {
               onPress={() => this.onDeckCardPress(id)}>
               <Card.Title
                 title={decks[id].title}
-                left={(props) => renderIcon}
+                left={() => renderIcon}
                 right={(props) => (
                   <Avatar.Text
                     {...props}
                     size={24}
                     style={styles.avatarText}
-                    label={decks[id].questions.length}
+                    label={decks[id].questions && decks[id].questions.length}
                   />
                 )}
               />
