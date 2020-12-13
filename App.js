@@ -7,35 +7,26 @@
  */
 
 import React from 'react';
-import {StyleSheet, ScrollView, View, Text, StatusBar} from 'react-native';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {Provider as StoreProvider} from 'react-redux';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import store from './store';
+import {themeOrange} from './utils/themes';
+
+import Routes from './routes/Routes';
 
 class App extends React.Component {
   render() {
     return (
       <>
-        <StatusBar barStyle="dark-content" />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <View style={styles.container}>
-            <Text>Hello world</Text>
-          </View>
-        </ScrollView>
+        <StoreProvider store={store}>
+          <PaperProvider theme={themeOrange}>
+            <Routes />
+          </PaperProvider>
+        </StoreProvider>
       </>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.white,
-  },
-  container: {
-    flex: 1,
-    padding: 15,
-  },
-});
 
 export default App;
