@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  View,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import {Avatar, Card, ActivityIndicator} from 'react-native-paper';
+import {Platform, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {Avatar, Card} from 'react-native-paper';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -17,6 +11,8 @@ import {primaryDark, secondaryLight, white} from '../utils/colors';
 import {getDecksFromStorage, saveAllDecksInStorage} from '../utils/api';
 import {setupDummyData} from '../utils/helpers';
 import {getDecks} from '../store/actions/actionCreators';
+
+import Loading from '../components/Loading';
 
 class Decks extends React.Component {
   state = {
@@ -42,10 +38,9 @@ class Decks extends React.Component {
     }
   }
 
-  onDeckCardPress(deck) {
+  onDeckCardPress(deckId) {
     this.props.navigation.navigate('Deck', {
-      deckId: deck.id,
-      title: deck.title,
+      deckId: deckId,
       navigation: this.props.navigation,
     });
   }
@@ -53,11 +48,7 @@ class Decks extends React.Component {
   render() {
     const {decks} = this.props;
     if (!this.state.ready) {
-      return (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator color={primaryDark} />
-        </View>
-      );
+      return <Loading />;
     }
     const renderIcon =
       Platform.OS === 'ios' ? (
@@ -81,7 +72,7 @@ class Decks extends React.Component {
             <TouchableOpacity
               key={id}
               style={styles.card}
-              onPress={() => this.onDeckCardPress(decks[id])}>
+              onPress={() => this.onDeckCardPress(id)}>
               <Card.Title
                 title={decks[id].title}
                 left={(props) => renderIcon}
@@ -108,15 +99,6 @@ function mapStateToProps({decks}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-  },
   card: {
     backgroundColor: white,
     borderRadius: Platform.OS === 'ios' ? 16 : 2,

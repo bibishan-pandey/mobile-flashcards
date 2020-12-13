@@ -11,7 +11,7 @@ import {Provider as PaperProvider} from 'react-native-paper';
 import {Provider as StoreProvider} from 'react-redux';
 
 import store from './store';
-import {themeOrange} from './utils/themes';
+import {theme} from './utils/themes';
 
 import Routes from './routes/Routes';
 
@@ -20,7 +20,7 @@ class App extends React.Component {
     return (
       <>
         <StoreProvider store={store}>
-          <PaperProvider theme={themeOrange}>
+          <PaperProvider theme={theme}>
             <Routes />
           </PaperProvider>
         </StoreProvider>
