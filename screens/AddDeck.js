@@ -55,7 +55,7 @@ class AddDeck extends React.Component {
     addDeck(deck);
     await saveDeckInStorage(deck);
     this.setState({deckTitle: ''});
-    navigate('Deck', {deckId: deckTitle});
+    navigate('Decks', {deckId: deckTitle});
   };
 
   render() {

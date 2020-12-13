@@ -18,12 +18,11 @@ const decks = (state = {}, action) => {
         ...action.deck,
       };
     case ADD_CARD_TO_DECK:
-      const {deckId, card} = action;
       return {
         ...state,
-        [deckId]: {
-          ...state[deckId],
-          questions: state[deckId].questions.concat([card]),
+        [action.deckId]: {
+          ...state[action.deckId],
+          questions: [...state[action.deckId].questions, action.card],
         },
       };
     case REMOVE_DECK:
