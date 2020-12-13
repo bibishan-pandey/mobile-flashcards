@@ -5,6 +5,8 @@ import {primaryDark, white} from '../utils/colors';
 
 import NavTab from './NavTab';
 import Deck from '../screens/Deck';
+import Quiz from '../screens/Quiz';
+import AddCard from '../screens/AddCard';
 
 const Stack = createStackNavigator();
 
@@ -24,12 +26,12 @@ const NavStack = () => (
       options={stackScreenOptions}
     />
     <Stack.Screen
-      name="Add New Card"
-      component={''}
+      name="AddCard"
+      component={AddCard}
       options={stackScreenOptions}
     />
     <Stack.Screen name="Deck" component={Deck} options={stackScreenOptions} />
-    <Stack.Screen name="Quiz" component={''} options={stackScreenOptions} />
+    <Stack.Screen name="Quiz" component={Quiz} options={stackScreenOptions} />
   </Stack.Navigator>
 );
 

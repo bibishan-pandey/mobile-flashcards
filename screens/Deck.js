@@ -1,14 +1,50 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {Alert, View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 
 import {Button as PaperButton, Colors} from 'react-native-paper';
 import {TextHeader, Paragraph, Button} from '../components';
 
-import {removeDeck} from '../store/actions/actionCreators';
+import {removeDeck as handleRemoveDeck} from '../store/actions/actionCreators';
+import {removeDeckFromStorage} from '../utils/api';
+
 import Loading from '../components/Loading';
 
 class Deck extends React.Component {
+  onAddCardPress() {
+    const {navigate} = this.props.navigation;
+    const {deckId} = this.props.route.params;
+    navigate('AddCard', {deckId: deckId});
+  }
+
+  onStartQuizPress() {
+    const {navigate} = this.props.navigation;
+    const {deckId} = this.props.route.params;
+    navigate('Quiz', {deckId: deckId});
+  }
+
+  onRemoveDeckPress() {
+    const {deck, navigation} = this.props;
+
+    Alert.alert(
+      'Delete Deck',
+      `Are you sure you want to delete ${deck.title} deck?`,
+      [
+        {text: 'Cancel'},
+        {
+          text: 'OK',
+          onPress: async () => {
+            const {removeDeck} = this.props;
+            await removeDeckFromStorage(deck.title);
+            removeDeck(deck.title);
+            navigation.navigate('Decks');
+          },
+        },
+      ],
+      {cancelable: true},
+    );
+  }
+
   render() {
     const {deck} = this.props;
 
@@ -25,18 +61,18 @@ class Deck extends React.Component {
         <Button
           mode="contained"
           disabled={deck.questions.length <= 0}
-          onPress={() => this.onStartQuizPress(deck.id)}>
+          onPress={() => this.onStartQuizPress()}>
           Start Quiz
         </Button>
 
-        <Button mode="outlined" onPress={() => this.onAddCardPress(deck.id)}>
+        <Button mode="outlined" onPress={() => this.onAddCardPress()}>
           Add New Card
         </Button>
 
         <PaperButton
           labelStyle={styles.buttonRemoveDeckLabel}
           mode="text"
-          onPress={() => this.onRemoveDeckPress(deck.id)}>
+          onPress={() => this.onRemoveDeckPress()}>
           Delete Deck
         </PaperButton>
       </View>
@@ -73,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, {removeDeck})(Deck);
+export default connect(mapStateToProps, {removeDeck: handleRemoveDeck})(Deck);
